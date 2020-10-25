@@ -1,21 +1,62 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Provider } from 'react-redux';
 
-export default function App() {
+import store from './redux/index';
+import History from './views/History';
+import Main from './views/Main';
+import Settings from './views/Settings';
+import Tasks from './views/Tasks';
+
+const Tab = createBottomTabNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator initialRouteName="Main">
+          <Tab.Screen
+            name="Main"
+            component={Main}
+            options={{
+              tabBarLabel: 'Menu',
+              tabBarIcon: ({ color, size }) => <Icon name="home" size={size - 5} color={color} />,
+            }}
+          />
+          <Tab.Screen
+            name="History"
+            component={History}
+            options={{
+              tabBarLabel: 'Historia',
+              tabBarIcon: ({ color, size }) => (
+                <Icon name="history" size={size - 5} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Tasks"
+            component={Tasks}
+            options={{
+              tabBarLabel: 'Zadnia',
+              tabBarIcon: ({ color, size }) => <Icon name="tasks" size={size - 5} color={color} />,
+            }}
+          />
+          <Tab.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              tabBarLabel: 'Ustawienia',
+              tabBarIcon: ({ color, size }) => <Icon name="gear" size={size - 5} color={color} />,
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
